@@ -15,6 +15,7 @@ export const Inner = styled.div`
 
 export const Pane = styled.div`
   width: 50%;
+  height: auto;
 `;
 
 export const Title = styled.h1`
