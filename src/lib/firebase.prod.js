@@ -1,20 +1,21 @@
 // Initialize Cloud Firestore through Firebase
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { seedDatabase } from "../seed";
+import { getAuth } from "firebase/auth";
+// import { seedDatabase } from "../seed";
 
-const firebaseApp = initializeApp({
-  apiKey: "AIzaSyBjBAKAMcOxlTMXGx8OfqVwDevp-YTO_og",
-  authDomain: "netflix-clone-b0d3c.firebaseapp.com",
-  projectId: "netflix-clone-b0d3c",
-  storageBucket: "netflix-clone-b0d3c.appspot.com",
-  messagingSenderId: "568275250235",
-  appId: "1:568275250235:web:5baf9faeee0c38cffe801e",
-  measurementId: "G-T508B4ZY2K",
+const firebase = initializeApp({
+  apiKey: "AIzaSyA8CyrLnCPyTSeSC1wJULAtTlk4v4Heceg",
+  authDomain: "netflix-clone-59e2a.firebaseapp.com",
+  projectId: "netflix-clone-59e2a",
+  storageBucket: "netflix-clone-59e2a.appspot.com",
+  messagingSenderId: "950117145407",
+  appId: "1:950117145407:web:0d8ffa21b8171460b7518a",
+  measurementId: "G-6PR7BKWH1N",
 });
 
 export const db = getFirestore();
+export const auth = getAuth();
+// seedDatabase(firebase);
 
-seedDatabase(firebaseApp);
-
-export { firebaseApp };
+export { firebase };

@@ -1,13 +1,14 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { FirebaseContext } from "../context/firebase";
 import { Form } from "../components";
 import { FooterContainer } from "../container/footer";
 import { HeaderContainer } from "../container/header";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../lib/firebase.prod";
 
 export default function Signin() {
   const history = useHistory();
-  const firebaseApp = useContext(FirebaseContext);
+
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,12 +17,8 @@ export default function Signin() {
   const handleSignin = (event) => {
     event.preventDefault();
 
-    // Firebase sẽ ở đây
-    firebaseApp
-      .auth()
-      .signInWithEmailAndPassword(emailAddress, password)
+    signInWithEmailAndPassword(auth, emailAddress, password)
       .then(() => {
-        // để page/browse vào đây
         history.push("/browse");
       })
       .catch((error) => {
@@ -55,14 +52,14 @@ export default function Signin() {
             <Form.Submit disable={isInvalid} type="submit">
               Sign In
             </Form.Submit>
+            <Form.Text>
+              New to Netflix? <Form.Linkk to="/signup">Sign up now.</Form.Linkk>
+            </Form.Text>
+            <Form.TextSmall>
+              This page is projected by Google reCAPTCHA to ensure you're not a
+              bot. Learn more.
+            </Form.TextSmall>
           </Form.Base>
-          <Form.Text>
-            New to Netflix? <Form.Linkk to="/signup">Sign up now.</Form.Linkk>
-          </Form.Text>
-          <Form.TextSmall>
-            This page is projected by Google reCAPTCHA to ensure you're not a
-            bot. Learn more.
-          </Form.TextSmall>
         </Form>
       </HeaderContainer>
       <FooterContainer />
