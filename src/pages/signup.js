@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Form } from "../components";
 import { FooterContainer } from "../container/footer";
 import { HeaderContainer } from "../container/header";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../lib/firebase.prod";
 
 export default function Signup() {
@@ -17,20 +17,19 @@ export default function Signup() {
   const isInvalid = firstName === "" || password === "" || emailAddress === "";
 
   const handleSignup = (event) => {
-    event.preventDefaut();
+    event.preventDefault();
 
     createUserWithEmailAndPassword(auth, emailAddress, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+      .then((result) => {
+        const user = result.user;
 
-        user
-          .updateProfile({
-            displayName: firstName,
-            photoURL: Math.floor(Math.random() * 5) + 1,
-          })
-          .then(() => {
-            history.push("/browse");
-          });
+        updateProfile(auth.currentUser, {
+          displayName: user.firstName,
+          photoURL: Math.floor(Math.random() * 5) + 1,
+        }).then(() => {
+          history.push("/browse");
+        });
+        console.log(user);
       })
       .catch((error) => {
         setFirstName("");
