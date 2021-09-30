@@ -168,7 +168,7 @@ export async function seedDatabase(firebase) {
   });
 
   // Crime
-  await addDoc(collection(db, "series"), {
+  await addDoc(collection(db, "series", "SF"), {
     id: getUUID(),
     title: "Making a Murderer",
     description:

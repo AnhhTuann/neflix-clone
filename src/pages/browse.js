@@ -1,3 +1,8 @@
+import { useContent } from "../hooks";
+
 export default function Browse() {
-  return <p>Co con cacs</p>;
+  const { series } = useContent("series");
+
+  console.log(useContent());
+  return <p>Day la Browser</p>;
 }
