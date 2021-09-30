@@ -1,13 +1,26 @@
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Home, Browse, Signin, Signup } from "../pages";
+import { IsUserRedirect, ProjectedRouter } from "../helpers/router";
+import { useAuthListener } from "../hooks";
+
 export default function Routers() {
+  const user = useAuthListener();
+  console.log(user);
   return (
     <>
       <Router>
-        <Route exact path="/browse" component={Browse} />
-        <Route exact path="/signin" component={Signin} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/" component={Home} />
+        <IsUserRedirect user={user} loggedInPath="/browse" path="/signin">
+          <Signin />
+        </IsUserRedirect>
+        <IsUserRedirect user={user} loggedInPath="/browse" path="/signup">
+          <Signup />
+        </IsUserRedirect>
+        <ProjectedRouter user={user} path="/browse" exact>
+          <Browse />
+        </ProjectedRouter>
+        <IsUserRedirect user={user} loggedInPath="/" path="/" exact>
+          <Home />
+        </IsUserRedirect>
       </Router>
     </>
   );
