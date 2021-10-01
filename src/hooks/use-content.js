@@ -1,14 +1,22 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase.prod";
+import { useEffect, useState } from "react";
+export default function useContent(target) {
+  const [content, setContent] = useState([]);
 
-export default async function useContent() {
-  const docRef = doc(db, "series", "films");
-  const docSnap = await getDoc(docRef);
+  useEffect(() => {
+    async function readFile() {
+      const querySnapshot = await getDocs(collection(db, target));
 
-  if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
-  } else {
-    // doc.data() will be undefined in this case
-    console.log("No such document!");
-  }
+      const Doc = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setContent(Doc);
+    }
+    readFile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { [target]: content };
 }
