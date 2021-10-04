@@ -1,3 +1,4 @@
+import { BrowseContainer } from "../container/browse";
 import { useContent } from "../hooks";
 import { selectionFilter } from "../utils";
 
@@ -9,7 +10,7 @@ export default function Browse() {
   // console.log(films);
 
   const slides = selectionFilter(series.series, films.films);
-  console.log(slides);
+  // console.log(slides);
 
-  return <p>Day la Browser</p>;
+  return <BrowseContainer slide={slides} />;
 }
