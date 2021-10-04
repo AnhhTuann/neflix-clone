@@ -17,6 +17,7 @@ export function BrowseContainer({ slide }) {
     } else {
       console.log("No user is signed in.");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.displayName]);
   return profile.displayName ? (
     loading ? (

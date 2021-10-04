@@ -22,9 +22,9 @@ export default function Signup() {
     createUserWithEmailAndPassword(auth, emailAddress, password)
       .then((result) => {
         const user = result.user;
-
+        //user lấy từ result là từ firebase mới tạo ra, nên nó k có displayName, firstname thôi, dùng state ở trên ô tạo
         updateProfile(auth.currentUser, {
-          displayName: user.firstName,
+          displayName: firstName,
           photoURL: Math.floor(Math.random() * 5) + 1,
         }).then(() => {
           history.push("/browse");
