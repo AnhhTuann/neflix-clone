@@ -7,6 +7,6 @@ export const GlobalStyles = createGlobalStyle`
         -moz-osx-font-smoothing : grayscale;
         background-color : black;
         color : #333333;
-        font-size: 16px;    
+        font-size: 16px; 
     }
 `;
