@@ -1,5 +1,5 @@
 export async function signup(req, res) {
-  res.send("Signup route");
+  //   res.send("Signup route");
 }
 
 export async function login(req, res) {
