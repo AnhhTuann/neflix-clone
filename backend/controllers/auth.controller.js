@@ -1,26 +1,27 @@
 import { User } from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
+import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 
 export async function signup(req, res) {
-  //   res.send("Signup route");
   try {
     const { email, password, username } = req.body;
 
     if (!email || !password || !username) {
       return res
         .status(400)
-        .json({ sucsses: false, message: "All fields are required" });
+        .json({ success: false, message: "All fields are required" });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ sucsses: false, message: "Invalid email" });
+      return res.status(400).json({ success: false, message: "Invalid email" });
     }
+
     if (password.length < 8) {
       return res.status(400).json({
-        sucsses: false,
-        message: "Password must be at least 8 characters long",
+        success: false,
+        message: "Password must be at least 8 characters",
       });
     }
 
@@ -29,7 +30,7 @@ export async function signup(req, res) {
     if (existingUserByEmail) {
       return res
         .status(400)
-        .json({ sucsses: false, message: "Email already exists" });
+        .json({ success: false, message: "Email already exists" });
     }
 
     const existingUserByUsername = await User.findOne({ username: username });
@@ -37,13 +38,13 @@ export async function signup(req, res) {
     if (existingUserByUsername) {
       return res
         .status(400)
-        .json({ sucsses: false, message: "Username already exists" });
+        .json({ success: false, message: "Username already exists" });
     }
 
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
-    const PROFILE_PICS = ["./avatar1.png", "./avatar2.png", "./avatar3.png"];
+    const PROFILE_PICS = ["/avatar1.png", "/avatar2.png", "/avatar3.png"];
 
     const image = PROFILE_PICS[Math.floor(Math.random() * PROFILE_PICS.length)];
 
@@ -54,10 +55,11 @@ export async function signup(req, res) {
       image,
     });
 
+    generateTokenAndSetCookie(newUser._id, res);
     await newUser.save();
 
     res.status(201).json({
-      sucsses: true,
+      success: true,
       user: {
         ...newUser._doc,
         password: "",
@@ -65,7 +67,7 @@ export async function signup(req, res) {
     });
   } catch (error) {
     console.log("Error in signup controller", error.message);
-    res.status(500).json({ sucsses: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 }
 
