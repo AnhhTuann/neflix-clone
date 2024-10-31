@@ -9,7 +9,7 @@ export const protectRoute = async (req, res, next) => {
     if (!token) {
       return res
         .status(401)
-        .json({ success: false, message: "Unauthorized - No token provided" });
+        .json({ success: false, message: "Unauthorized - No Token Provided" });
     }
 
     const decoded = jwt.verify(token, ENV_VARS.JWT_SECRET);
@@ -17,15 +17,15 @@ export const protectRoute = async (req, res, next) => {
     if (!decoded) {
       return res
         .status(401)
-        .json({ success: false, message: "Unauthorized - Invalid token" });
+        .json({ success: false, message: "Unauthorized - Invalid Token" });
     }
 
     const user = await User.findById(decoded.userId).select("-password");
 
     if (!user) {
       return res
-        .status(401)
-        .json({ success: false, message: "Unauthorized - User not found" });
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     req.user = user;
@@ -33,6 +33,6 @@ export const protectRoute = async (req, res, next) => {
     next();
   } catch (error) {
     console.log("Error in protectRoute middleware: ", error.message);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
