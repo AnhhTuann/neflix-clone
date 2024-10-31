@@ -1,5 +1,12 @@
+import { useAuthStore } from "../../store/authUser";
+
 const HomeScreen = () => {
-  return <div>home</div>;
+  const { logout } = useAuthStore();
+  return (
+    <div>
+      <button onClick={logout}>logout</button>
+    </div>
+  );
 };
 
 export default HomeScreen;
